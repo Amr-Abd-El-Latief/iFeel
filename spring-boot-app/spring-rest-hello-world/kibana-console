@@ -1,0 +1,247 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /_cat/indices
+
+PUT feelingsindexr
+{
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings": {
+  "feeling": {
+            "properties": {
+            "feeling": {"type": "short"},
+             "location": {"type": "geo_point"}
+}
+}
+ }
+}
+
+
+DELETE /feelingsindexr
+
+PUT feelingsindexr/feeling/1
+{
+  
+    "feeling": 1,
+    "location": {"lat": "30.075303", "lon": "31.019886"}
+}
+
+
+
+PUT feelingsindexr/feeling/2
+{
+  
+    "feeling": 2,
+    "location": {"lat": "30.075269", "lon": "31.020086"}
+}
+
+
+
+PUT feelingsindexr/feeling/3
+{
+  
+    "feeling": 2,
+    "location": {"lat": "30.075483", "lon": "31.020133"}
+}
+
+
+
+PUT feelingsindexr/feeling/4
+{
+  
+    "feeling": 3,
+    "location": {"lat": "30.075387", "lon": "31.020686"}
+}
+
+
+
+PUT feelingsindexr/feeling/5
+{
+  
+    "feeling": 4,
+    "location": {"lat": "30.075191", "lon": "31.019619"}
+}
+
+
+
+PUT feelingsindexr/feeling/6
+{
+  
+    "feeling": 5,
+    "location": {"lat": "30.076258", "lon": "31.021611"}
+}
+
+
+
+
+PUT feelingsindexr/feeling/7
+{
+  
+    "feeling": 1,
+    "location": {"lat": "30.076953", "lon": "31.022124"}
+}
+
+
+
+
+PUT feelingsindexr/feeling/8
+{
+  
+    "feeling": 2,
+    "location": {"lat": "30.077138", "lon": "31.021182"}
+}
+
+
+
+
+PUT feelingsindexr/feeling/9
+{
+  
+    "feeling": 3,
+    "location": {"lat": "30.076953", "lon": "31.019580"}
+}
+
+
+
+PUT feelingsindexr/feeling/9
+{
+  
+    "feeling": 3,
+    "location": {"lat": "30.076953", "lon": "31.019580"}
+}
+
+
+
+
+
+
+
+
+
+
+# search
+
+GET /feelingsindexr/feeling/_search?pretty=true
+{
+  "query": {
+    "bool" : {
+        
+        "filter" : {
+            "geo_distance" : {
+                "distance" : "0.1km",
+                "location" : {
+                    "lat" : 30.075303,
+                    "lon" : 31.019886
+                }
+            }
+        }
+    }
+  }
+}
+
+
+
+
+
+{
+    "query": {
+        "bool": {
+            "must": {
+                "multi_match": {
+                    "operator": "and",
+                    "fields": [
+                        "author",
+                        "title",
+                        "publisher",
+                        "year"
+                    ],
+                    "query": "George Orwell"
+                }
+            },
+            "filter": {
+                "terms": {
+                    "year": [
+                        1980,
+                        1981
+                    ]
+                }
+            }
+        }
+    }
+}
+
+
+GET /feelingsindexr/feeling/_search
+
+
+GET /feelingsindexr/_mappings
+
+
+
+
+
+
+//     elastic search urls 
+
+
+
+GET /feelingsindexr/feeling/_search?pretty=true
+{
+  %22query%22: {
+    %22bool%22 : {
+        
+        %22filter%22 : {
+            %22geo_distance%22 : {
+                %22distance%22 : %220.1km%22,
+                %22location%22 : {
+                    %22lat%22 : 30.075303,
+                    %22lon%22 : 31.019886
+                }
+            }
+        }
+    }
+  }
+}
+
+
+http://localhost:9200/feelingsindexr/feeling/_search?pretty=true&source = { %22query%22: { %22bool%22 : { %22filter%22 : { %22geo_distance%22 : { %22distance%22 : %220.1km%22, %22location%22 : { %22lat%22 : 30.075303, %22lon%22 : 31.019886 } } } } } }&source_content_type=application/json
+
+
+
+
+
+
+the true workin one 
+
+http://localhost:9200/feelingsindexr/feeling/_search?pretty=true&source={%20%22query%22:%20{%20%22bool%22%20:%20{%20%22filter%22%20:%20{%20%22geo_distance%22%20:%20{%20%22distance%22%20:%20%220.1km%22,%20%22location%22%20:%20{%20%22lat%22%20:%2030.075303,%20%22lon%22%20:%2031.019886%20}%20}%20}%20}%20}%20}&source_content_type=application/json
+
+
+
+
+
+GET /feelingsindexr/feeling/_search?pretty=true
+{
+  \"query\": {
+    \"bool\" : {
+        
+        \"filter\" : {
+            \"geo_distance\" : {
+                \"distance\" : \"0.1km\",
+                \"location\" : {
+                    \"lat\" : 30.075303,
+                    \"lon\" : 31.019886
+                }
+            }
+        }
+    }
+  }
+}
+
+
+/feelingsindexr/feeling/_search?pretty=true { \"query\": { \"bool\" : { \"filter\" : { \"geo_distance\" : { \"distance\" : \"0.1km\", \"location\" : { \"lat\" : 30.075303, \"lon\" : 31.019886 } } } } } }
